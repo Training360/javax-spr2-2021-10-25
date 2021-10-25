@@ -11,9 +11,12 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/employees")
 @AllArgsConstructor
+@Slf4j
 public class EmployeeController {
 
     private EmployeeService employeeService;
+
+    private LongTask longTask;
 
     @GetMapping
     public List<EmployeeDto> employees() {
@@ -29,6 +32,8 @@ public class EmployeeController {
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(description = "creates an employee")
     public EmployeeDto createEmployee(@RequestBody CreateEmployeeCommand command) {
+        longTask.doLongTask();
+        log.info("Create employee: {}", Thread.currentThread().getName());
         return employeeService.createEmployee(command);
     }
 
