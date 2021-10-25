@@ -2,7 +2,9 @@ package empapp;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,6 +17,7 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
+    @CacheEvict(value = "employees", allEntries = true)
     public EmployeeDto createEmployee(CreateEmployeeCommand command) {
         Employee employee = new Employee(command.getName());
         ModelMapper modelMapper = new ModelMapper();
@@ -25,6 +28,7 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
+    @Cacheable("employees")
     public List<EmployeeDto> listEmployees() {
         ModelMapper modelMapper = new ModelMapper();
         return employeeRepository.findAllWithAddresses().stream()
@@ -41,6 +45,9 @@ public class EmployeeService {
     }
 
     @Transactional
+    @Caching(evict = {
+        @CacheEvict(value = "employee", key = "#id"),
+        @CacheEvict(value = "employees", allEntries = true)})
     public EmployeeDto updateEmployee(long id, UpdateEmployeeCommand command) {
         Employee employeeToModify = employeeRepository.getById(id);
         employeeToModify.setName(command.getName());
@@ -48,6 +55,9 @@ public class EmployeeService {
         return modelMapper.map(employeeToModify, EmployeeDto.class);
     }
 
+    @Caching(evict = {
+    @CacheEvict(value = "employee", key = "#id"),
+    @CacheEvict(value = "employees", allEntries = true)})
     public void deleteEmployee(long id) {
         Employee employee = employeeRepository.findByIdWithAddresses(id)
                 .orElseThrow(() -> new NotFoundException("Employee not found with id: " + id));
