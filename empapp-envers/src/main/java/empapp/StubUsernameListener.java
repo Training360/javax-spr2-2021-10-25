@@ -14,6 +14,15 @@ public class StubUsernameListener implements RevisionListener {
 
     @Override
     public void newRevision(Object o) {
+        // Java 17-ben
+        //        if (o instanceof EmployeeRevisionEntity revision) {
+//            revision.setUsername("user1234");
+//            log.info("StubUsernameListener {} {}", requestDetails.getIp(), requestDetails.getPostman());
+//            revision.setIpAddress(requestDetails.getIp());
+//            revision.setPostmanToken(requestDetails.getPostman());
+//
+//        }
+
         EmployeeRevisionEntity revision = (EmployeeRevisionEntity) o;
         revision.setUsername("user1234");
         log.info("StubUsernameListener {} {}", requestDetails.getIp(), requestDetails.getPostman());
