@@ -13,12 +13,15 @@ POST http://localhost:8080/api/employees
 Content-Type: application/json
 
 {
-  "name": "Jane Doe"
+  "name": "Jane Doe",
+  "addresses": [{
+    "city": "Budapest"
+  }]
 }
 
 ### Update
 
-PUT http://localhost:8080/api/employees/9
+PUT http://localhost:8080/api/employees/1
 Content-Type: application/json
 
 {
