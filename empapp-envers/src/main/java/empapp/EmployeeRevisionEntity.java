@@ -27,4 +27,7 @@ public class EmployeeRevisionEntity {
     @Column(name = "ip_address")
     private String ipAddress;
 
+    @Column(name = "postman_token")
+    private String postmanToken;
+
 }
