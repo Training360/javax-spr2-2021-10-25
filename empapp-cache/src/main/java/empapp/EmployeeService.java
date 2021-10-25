@@ -2,6 +2,7 @@ package empapp;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class EmployeeService {
                 .collect(Collectors.toList());
     }
 
+    @Cacheable("employee")
     public EmployeeDto findEmployeeById(long id) {
         ModelMapper modelMapper = new ModelMapper();
         return modelMapper.map(employeeRepository.findByIdWithAddresses(id)
