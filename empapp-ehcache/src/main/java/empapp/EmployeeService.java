@@ -17,7 +17,7 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
-    @CacheEvict(value = "employees", allEntries = true)
+    //@CacheEvict(value = "employees", allEntries = true)
     public EmployeeDto createEmployee(CreateEmployeeCommand command) {
         Employee employee = new Employee(command.getName());
         ModelMapper modelMapper = new ModelMapper();
@@ -28,7 +28,7 @@ public class EmployeeService {
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
-    @Cacheable("employees")
+//    @Cacheable("employees")
     public List<EmployeeDto> listEmployees() {
         ModelMapper modelMapper = new ModelMapper();
         return employeeRepository.findAllWithAddresses().stream()
@@ -46,8 +46,9 @@ public class EmployeeService {
 
     @Transactional
     @Caching(evict = {
-        @CacheEvict(value = "employee", key = "#id"),
-        @CacheEvict(value = "employees", allEntries = true)})
+        @CacheEvict(value = "employee", key = "#id") //,
+        //@CacheEvict(value = "employees", allEntries = true)
+            })
     public EmployeeDto updateEmployee(long id, UpdateEmployeeCommand command) {
         Employee employeeToModify = employeeRepository.getById(id);
         employeeToModify.setName(command.getName());
@@ -56,8 +57,9 @@ public class EmployeeService {
     }
 
     @Caching(evict = {
-    @CacheEvict(value = "employee", key = "#id"),
-    @CacheEvict(value = "employees", allEntries = true)})
+    @CacheEvict(value = "employee", key = "#id") //,
+    //@CacheEvict(value = "employees", allEntries = true)
+            })
     public void deleteEmployee(long id) {
         Employee employee = employeeRepository.findByIdWithAddresses(id)
                 .orElseThrow(() -> new NotFoundException("Employee not found with id: " + id));
