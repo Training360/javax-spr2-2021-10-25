@@ -29,10 +29,9 @@
         <value-type>empapp.EmployeeDto</value-type>
     </cache>
 
-<!--    <cache alias="employees" uses-template="default">-->
-
-<!--        <value-type>java.util.List</value-type>-->
-<!--    </cache>-->
+    <cache alias="employees" uses-template="default">
+        <value-type>java.util.List</value-type>
+    </cache>
 
 
 </config>
