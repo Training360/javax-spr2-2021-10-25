@@ -26,11 +26,11 @@ public class EmployeesSseController {
         log.info("getMessages" + Thread.currentThread().getName());
         SseEmitter emitter = new SseEmitter();
         emitters.add(emitter);
-        try {
-            emitter.send("Connected");
-        } catch (IOException ioe) {
-            log.error("Error", ioe);
-        }
+//        try {
+//            emitter.send("Connected");
+//        } catch (IOException ioe) {
+//            log.error("Error", ioe);
+//        }
         // Ciklusban, késleltetetten
         return emitter;
     }
