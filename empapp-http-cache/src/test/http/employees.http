@@ -3,9 +3,13 @@ Accept: application/json
 
 ###
 
-GET http://localhost:8080/api/employees/300
+GET http://localhost:8080/api/employees/1
 Accept: application/json
 
+###
+GET http://localhost:8080/api/employees/1
+Accept: application/json
+If-none-match: "3"
 
 ###
 
@@ -18,11 +22,11 @@ Content-Type: application/json
 
 ### Update
 
-PUT http://localhost:8080/api/employees/9
+PUT http://localhost:8080/api/employees/1
 Content-Type: application/json
 
 {
-  "name": "Jane Doe 2"
+  "name": "Jane Doe 666"
 }
 
 ### Delete

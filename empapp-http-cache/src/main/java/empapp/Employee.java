@@ -22,6 +22,9 @@ public class Employee {
     @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
     private List<Address> addresses = new ArrayList<>();
 
+    @Version
+    private int version;
+
     public Employee(String name) {
         this.name = name;
     }
