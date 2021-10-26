@@ -7,12 +7,13 @@ window.onload = function() {
             const text = JSON.parse(message.body).text;
             console.log(text);
             document.querySelector("#message-div").innerHTML +=
-                `<p>${text}</p>`;
+                "<p>" + text + "</p>";
         });
     });
 
     document.querySelector("#message-button").onclick = function() {
         let content = document.querySelector("#message-input").value;
         stompClient.send("/app/messages", {}, JSON.stringify({"content": content}));
+        return false;
     };
 }

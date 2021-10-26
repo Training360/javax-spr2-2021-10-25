@@ -2,10 +2,13 @@ package empapp;
 
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -14,6 +17,8 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
+    private SimpMessagingTemplate template;
+
     public EmployeeDto createEmployee(CreateEmployeeCommand command) {
         Employee employee = new Employee(command.getName());
         ModelMapper modelMapper = new ModelMapper();
@@ -21,6 +26,12 @@ public class EmployeeService {
             employee.addAddresses(command.getAddresses().stream().map(a -> modelMapper.map(a, Address.class)).collect(Collectors.toList()));
         }
         employeeRepository.save(employee);
+
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("message-type", "employee-created");
+        template.convertAndSend("/topic/employees",
+                new MessageWebsocketDto(String.format("Employee has been created: %s", command.getName())), headers);
+
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
