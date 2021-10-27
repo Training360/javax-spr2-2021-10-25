@@ -14,6 +14,8 @@ public class EmployeeService {
 
     private EmployeeRepository employeeRepository;
 
+    private EmployeesMessageGateway gateway;
+
     public EmployeeDto createEmployee(CreateEmployeeCommand command) {
         Employee employee = new Employee(command.getName());
         ModelMapper modelMapper = new ModelMapper();
@@ -21,6 +23,9 @@ public class EmployeeService {
             employee.addAddresses(command.getAddresses().stream().map(a -> modelMapper.map(a, Address.class)).collect(Collectors.toList()));
         }
         employeeRepository.save(employee);
+
+        gateway.sendMessage(String.format("Employee has been createed: %s, id: %d", command.getName(), employee.getId()));
+
         return modelMapper.map(employee, EmployeeDto.class);
     }
 
